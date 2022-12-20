@@ -1,0 +1,15 @@
+name = "news"
+main = "src/index.ts"
+compatibility_date = "2022-12-19"
+workers_dev = false
+
+# D1
+[[ d1_databases ]]
+binding = "DB"
+database_name = ""
+database_id = ""
+preview_database_id = ""
+
+# Cron
+[triggers]
+crons = ["0 * * * *"]
