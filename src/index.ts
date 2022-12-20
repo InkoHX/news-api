@@ -10,7 +10,7 @@ export interface Env {
 const app = new Hono<{ Bindings: Env }>()
 
 app.get(
-  '/api',
+  '/',
   validator((validator) => ({
     skip: validator
       .query('skip')
