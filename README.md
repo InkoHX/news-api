@@ -1,6 +1,6 @@
 # news.inkohx.dev
 
-色々なサイトのフィードをまとめてJSON形式で返してくれるAPI
+色々なサイトのフィードをまとめて JSON 形式で返してくれる API
 
 ## Requirements
 
