@@ -9,6 +9,8 @@ binding = "DB"
 database_name = ""
 database_id = ""
 preview_database_id = ""
+migrations_dir = "./db/migrations"
+#migrations_table = ""
 
 # Cron
 [triggers]
