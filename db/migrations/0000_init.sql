@@ -1,33 +1,33 @@
 -- Migration number: 0000 	 2022-12-21T07:00:00.000Z
 
 -- Category table
-CREATE TABLE IF NOT EXISTS "Category" (
+CREATE TABLE "Category" (
   "id" INTEGER NOT NULL PRIMARY KEY,
   "name" TEXT NOT NULL UNIQUE
 );
 
 -- Feed table
-CREATE TABLE IF NOT EXISTS "Feed" (
+CREATE TABLE "Feed" (
   "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "url" TEXT NOT NULL UNIQUE,
   "name" TEXT NOT NULL UNIQUE,
   "updatedAt" TEXT DEFAULT '1970-01-01' NOT NULL,
   "categoryId" INTEGER NOT NULL,
-  CONSTRAINT "Feed_categoryId_fk" FOREIGN KEY ("categoryId") REFERENCES "Category" ON UPDATE CASCADE ON DELETE RESTRICT
+  CONSTRAINT "Feed_categoryId_fk" FOREIGN KEY ("categoryId") REFERENCES "Category" ON UPDATE CASCADE
 );
 
 -- Item table
-CREATE TABLE IF NOT EXISTS "Item" (
+CREATE TABLE "Item" (
   "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "url" TEXT NOT NULL UNIQUE,
   "title" TEXT NOT NULL,
   "publishedAt" TEXT NOT NULL,
   "feedId" INTEGER NOT NULL,
-  CONSTRAINT "Item_feedId_fk" FOREIGN KEY ("feedId") REFERENCES "Feed" ON UPDATE CASCADE ON DELETE RESTRICT
+  CONSTRAINT "Item_feedId_fk" FOREIGN KEY ("feedId") REFERENCES "Feed" ON UPDATE CASCADE
 );
 
 -- Insert categories
-INSERT OR IGNORE INTO Category ("id", "name")
+INSERT INTO Category ("id", "name")
 VALUES
   (1, 'Programming Language'),
   (2, 'JavaScript Library'),
@@ -39,7 +39,7 @@ VALUES
   (128, 'Hosting Service');
 
 -- Insert follow feeds
-INSERT OR IGNORE INTO Feed ("name", "url", "categoryId")
+INSERT INTO Feed ("name", "url", "categoryId")
 VALUES
   ('Kotlin', 'https://blog.jetbrains.com/kotlin/feed', 1),
   ('TypeScript', 'https://devblogs.microsoft.com/typescript/feed', 1),
