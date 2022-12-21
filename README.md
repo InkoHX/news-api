@@ -14,8 +14,8 @@
 npm ci
 
 # D1のローカル環境構築
-npx wrangler d1 execute <preview_db> --file=./d1/schema.sql
-npx wrangler d1 execute <preview_db> --file=./d1/seed.sql
+npx wrangler d1 migrations apply <preview_db>
+npx wrangler d1 execute <preview_db> --file=./db/seed.sql
 
 # wrangler dev
 npm run dev
@@ -24,7 +24,7 @@ npm run dev
 ## Production
 
 ```sh
-npx wrangler d1 execute <production_db> --file=./d1/schema.sql
+npx wrangler d1 migrations apply <production_db>
 
 # wrangler publish
 npm run deploy
