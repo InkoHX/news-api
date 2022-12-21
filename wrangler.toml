@@ -6,11 +6,11 @@ workers_dev = false
 # D1
 [[ d1_databases ]]
 binding = "DB"
-database_name = ""
-database_id = ""
-preview_database_id = ""
+database_name = "news"
+database_id = "48be842e-9875-4bd7-af9b-acd1da72c444"
+preview_database_id = "5be48141-1b60-461b-89bc-c3c5a8bac112"
 migrations_dir = "./db/migrations"
-#migrations_table = ""
+#migrations_table = "<d1_migrations>"
 
 # Cron
 [triggers]
