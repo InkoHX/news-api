@@ -2,12 +2,14 @@
 
 色々なサイトのフィードをまとめて JSON 形式で返してくれる API
 
-## Requirements
+## 必要なもの
 
 - Cloudflare Workers
 - Cloudflare D1
 
-## Development
+## 環境構築
+
+### 開発用
 
 ```sh
 # 依存インストール
@@ -21,7 +23,7 @@ npx wrangler d1 execute <preview_db> --file=./db/seed.sql
 npm run dev
 ```
 
-## Production
+### 本番環境
 
 ```sh
 npx wrangler d1 migrations apply <production_db>
