@@ -9,8 +9,8 @@
     "deploy": "wrangler publish"
   },
   "dependencies": {
-    "@extractus/feed-extractor": "^6.1.7",
-    "hono": "^2.6.2"
+    "@extractus/feed-extractor": "^6.1.8",
+    "hono": "^2.7.1"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20221111.1",
