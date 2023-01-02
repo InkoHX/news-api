@@ -1,7 +1,8 @@
 import { Hono } from 'hono'
 import { cache } from 'hono/cache'
-import { validator } from 'hono/validator'
+import { cors } from 'hono/cors'
 import { read } from '@extractus/feed-extractor'
+import { z } from 'zod'
 
 export interface Env {
   DB: D1Database
@@ -9,28 +10,30 @@ export interface Env {
 
 const app = new Hono<{ Bindings: Env }>()
 
+const querySchema = z.object({
+  skip: z.string().regex(/^\d+$/s).optional(),
+  size: z.string().regex(/^\d+$/s).optional(),
+  categories: z.string().regex(/^\d+$/s).optional(),
+})
+
+app.use(
+  cors({
+    origin: ['https://news.inkohx.dev'],
+    allowMethods: ['GET'],
+    credentials: false,
+    maxAge: 3600,
+  })
+)
+
 app.get(
   '/',
-  validator((validator) => ({
-    skip: validator
-      .query('skip')
-      .isOptional()
-      .isNumeric()
-      .message('"skip" is must be numeric.'),
-    size: validator
-      .query('size')
-      .isOptional()
-      .isNumeric()
-      .message('"size" is must be numeric.'),
-    categories: validator
-      .query('categories')
-      .isOptional()
-      .isNumeric()
-      .message('"categories" is must be numeric.'),
-  })),
   cache({ cacheName: 'news-api', cacheControl: 'public, max-age=3600' }),
   async (context) => {
-    const queries = context.req.valid()
+    const queries = querySchema.safeParse(context.req.queries())
+
+    if (!queries.success)
+      return context.json({ message: 'Invalid queries.' }, 400)
+
     const categoryIds = await context.env.DB.prepare(
       'SELECT DISTINCT id FROM Category'
     ).all<{ id: number }>()
@@ -44,9 +47,11 @@ app.get(
       (prev, current) => prev | current.id,
       0
     )
-    const categories = Number.parseInt(queries.categories) || maxCategoriesValue
-    const skip = Number.parseInt(queries.skip) || 0
-    const size = Number.parseInt(queries.size) || 25
+    const categories = queries.data.categories
+      ? Number.parseInt(queries.data.categories)
+      : maxCategoriesValue
+    const skip = queries.data.skip ? Number.parseInt(queries.data.skip) : 0
+    const size = queries.data.size ? Number.parseInt(queries.data.size) : 25
 
     console.log('Categories', categories)
     console.log('Skip', skip)

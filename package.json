@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "@extractus/feed-extractor": "^6.1.8",
-    "hono": "^2.7.1"
+    "hono": "^2.7.1",
+    "zod": "^3.20.2"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20221111.1",
