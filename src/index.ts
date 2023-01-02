@@ -82,10 +82,13 @@ ORDER BY publishedAt DESC LIMIT ?3`
       .all<{ name: string; publishedAt: string; title: string; url: string }>()
 
     return context.json(
-      items.results?.map((item) => ({
-        ...item,
-        publishedAt: new Date(item.publishedAt),
-      }))
+      items.results?.map(
+        (item) =>
+          ({
+            ...item,
+            publishedAt: new Date(item.publishedAt),
+          } ?? [])
+      )
     )
   }
 )
