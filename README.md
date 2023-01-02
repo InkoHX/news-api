@@ -1,4 +1,4 @@
-# news.inkohx.dev
+# news-api.inkohx.dev
 
 色々なサイトのフィードをまとめて JSON 形式で返してくれる API
 
