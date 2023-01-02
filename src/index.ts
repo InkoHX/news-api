@@ -11,9 +11,9 @@ export interface Env {
 const app = new Hono<{ Bindings: Env }>()
 
 const querySchema = z.object({
-  skip: z.string().regex(/^\d+$/s).optional(),
-  size: z.string().regex(/^\d+$/s).optional(),
-  categories: z.string().regex(/^\d+$/s).optional(),
+  skip: z.string().trim().regex(/^\d+$/).optional(),
+  size: z.string().trim().regex(/^\d+$/).optional(),
+  categories: z.string().trim().regex(/^\d+$/).optional(),
 })
 
 app.use(
@@ -29,7 +29,7 @@ app.get(
   '/',
   cache({ cacheName: 'news-api', cacheControl: 'public, max-age=3600' }),
   async (context) => {
-    const queries = querySchema.safeParse(context.req.queries())
+    const queries = querySchema.safeParse(context.req.query())
 
     if (!queries.success)
       return context.json({ message: 'Invalid queries.' }, 400)
