@@ -69,16 +69,15 @@ app.get(
 
     const items = await context.env.DB.prepare(
       `
-SELECT Item.url, title, publishedAt, Feed.name
+SELECT Feed.name, Item.publishedAt, Item.title, Item.url
 FROM Item
 INNER JOIN Feed ON Item.feedId = Feed.id
-WHERE
-  Item.id NOT IN (
-    SELECT id FROM Item ORDER BY publishedAt DESC LIMIT ?1
-  ) AND (?2 & Feed.categoryId) = Feed.categoryId
-ORDER BY publishedAt DESC LIMIT ?3`
+WHERE (? & Feed.categoryId) = Feed.categoryId
+ORDER BY Item.publishedAt DESC
+LIMIT ? OFFSET ?
+    `
     )
-      .bind(skip, categories, size)
+      .bind(categories, size, size + skip)
       .all<{ name: string; publishedAt: string; title: string; url: string }>()
 
     return context.json(
@@ -87,7 +86,7 @@ ORDER BY publishedAt DESC LIMIT ?3`
           ({
             ...item,
             publishedAt: new Date(item.publishedAt),
-          }) ?? []
+          } ?? [])
       )
     )
   }
