@@ -77,7 +77,7 @@ ORDER BY Item.publishedAt DESC
 LIMIT ? OFFSET ?
     `
     )
-      .bind(categories, size, size + skip)
+      .bind(categories, size, skip)
       .all<{ name: string; publishedAt: string; title: string; url: string }>()
 
     return context.json(
