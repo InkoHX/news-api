@@ -16,14 +16,7 @@ const querySchema = z.object({
   categories: z.string().trim().regex(/^\d+$/).optional(),
 })
 
-app.use(
-  cors({
-    origin: ['https://news.inkohx.dev'],
-    allowMethods: ['GET'],
-    credentials: false,
-    maxAge: 3600,
-  })
-)
+app.use(cors())
 
 app.get(
   '/',
