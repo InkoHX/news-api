@@ -87,7 +87,7 @@ ORDER BY publishedAt DESC LIMIT ?3`
           ({
             ...item,
             publishedAt: new Date(item.publishedAt),
-          } ?? [])
+          }) ?? []
       )
     )
   }
