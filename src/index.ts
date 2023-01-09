@@ -17,7 +17,7 @@ const querySchema = z.object({
   categories: z.string().trim().regex(/^\d+$/).optional(),
 })
 
-app.use(cors())
+app.use('*', cors())
 
 app.get(
   '/categories',
