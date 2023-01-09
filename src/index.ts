@@ -3,6 +3,7 @@ import { cache } from 'hono/cache'
 import { cors } from 'hono/cors'
 import { read } from '@extractus/feed-extractor'
 import { z } from 'zod'
+import { Category } from './types'
 
 export interface Env {
   DB: D1Database
@@ -17,6 +18,26 @@ const querySchema = z.object({
 })
 
 app.use(cors())
+
+app.get(
+  '/categories',
+  cache({ cacheName: 'get-categories', cacheControl: 'public, max-age=3600' }),
+  async (context) => {
+    const categories = await context.env.DB.prepare(
+      'SELECT id, name FROM Category'
+    ).run<Category>()
+
+    if (!categories.success) {
+      console.error(categories.error)
+
+      return context.json({ message: 'Internal Server Error' }, 500)
+    }
+
+    const body = categories.results?.map(({ name, id }) => [id, name])
+
+    return context.json(body)
+  }
+)
 
 app.get(
   '/',
