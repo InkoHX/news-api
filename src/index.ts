@@ -24,16 +24,9 @@ app.get(
   cache({ cacheName: 'get-categories', cacheControl: 'public, max-age=3600' }),
   async (context) => {
     const categories = await context.env.DB.prepare(
-      'SELECT id, name FROM Category'
-    ).run<Category>()
-
-    if (!categories.success) {
-      console.error(categories.error)
-
-      return context.json({ message: 'Internal Server Error' }, 500)
-    }
-
-    const body = categories.results?.map(({ name, id }) => [id, name])
+      'SELECT * FROM Category'
+    ).all<Category>()
+    const body = categories.results?.map(({ name, id }) => [id, name] as const)
 
     return context.json(body)
   }
