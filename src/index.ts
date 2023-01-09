@@ -3,7 +3,7 @@ import { cache } from 'hono/cache'
 import { cors } from 'hono/cors'
 import { read } from '@extractus/feed-extractor'
 import { z } from 'zod'
-import { Category } from './types'
+import { Category, Feed, Item } from './types'
 
 export interface Env {
   DB: D1Database
@@ -81,6 +81,8 @@ app.get(
       return context.json({ message }, 400)
     }
 
+    type Result = Omit<Item, 'feedId'> & Pick<Feed, 'name'>
+
     const items = await context.env.DB.prepare(
       `
 SELECT Feed.name, Item.publishedAt, Item.title, Item.url
@@ -92,7 +94,7 @@ LIMIT ? OFFSET ?
     `
     )
       .bind(categories, size, skip)
-      .all<{ name: string; publishedAt: string; title: string; url: string }>()
+      .all<Result>()
 
     return context.json(
       items.results?.map(
