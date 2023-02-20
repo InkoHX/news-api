@@ -1,6 +1,6 @@
 name = "news"
 main = "src/index.ts"
-compatibility_date = "2022-12-19"
+compatibility_date = "2022-02-20"
 workers_dev = false
 
 # D1

@@ -5,11 +5,11 @@ import { read } from '@extractus/feed-extractor'
 import { z } from 'zod'
 import { Category, Feed, Item } from './types'
 
-export interface Env {
-  DB: D1Database
+export type Bindings = {
+  readonly DB: D1Database
 }
 
-const app = new Hono<{ Bindings: Env }>()
+const app = new Hono<{ Bindings: Bindings }>()
 
 const querySchema = z.object({
   skip: z.string().trim().regex(/^\d+$/).optional(),
@@ -105,7 +105,7 @@ export default {
   fetch: app.fetch,
   async scheduled(
     _event: ScheduledEvent,
-    { DB }: Env,
+    { DB }: Bindings,
     _context: Pick<ExecutionContext, 'waitUntil'>
   ) {
     const feeds = await DB.prepare(
