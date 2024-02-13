@@ -1,15 +1,15 @@
 name = "news"
 main = "src/index.ts"
-compatibility_date = "2022-02-20"
+compatibility_date = "2024-02-13"
 workers_dev = false
 
-# D1
 [[ d1_databases ]]
 binding = "DB"
 database_name = "news"
 database_id = "48be842e-9875-4bd7-af9b-acd1da72c444"
-preview_database_id = "5be48141-1b60-461b-89bc-c3c5a8bac112"
 migrations_dir = "./db/migrations"
+preview_database_id = "5be48141-1b60-461b-89bc-c3c5a8bac112"
+# D1
 #migrations_table = "<d1_migrations>"
 
 # Cron

@@ -16,8 +16,8 @@
 npm ci
 
 # D1のローカル環境構築
-npx wrangler d1 migrations apply <preview_db>
-npx wrangler d1 execute <preview_db> --file=./db/seed.sql
+npx wrangler d1 migrations apply DB --local
+npx wrangler d1 execute DB --local --file=./db/seed.sql
 
 # wrangler dev
 npm run dev

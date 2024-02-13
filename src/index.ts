@@ -24,12 +24,15 @@ app.get(
   cache({ cacheName: 'get-categories', cacheControl: 'public, max-age=3600' }),
   async (context) => {
     const categories = await context.env.DB.prepare(
-      'SELECT * FROM Category'
+      'SELECT * FROM Category',
     ).all<Category>()
-    const body = categories.results?.map(({ name, id }) => [id, name] as const)
+    const body = categories.results?.map(({ name, id }): [number, string] => [
+      id,
+      name,
+    ])
 
     return context.json(body)
-  }
+  },
 )
 
 app.get(
@@ -42,7 +45,7 @@ app.get(
       return context.json({ message: 'Invalid queries.' }, 400)
 
     const categoryIds = await context.env.DB.prepare(
-      'SELECT DISTINCT id FROM Category'
+      'SELECT DISTINCT id FROM Category',
     ).all<{ id: number }>()
 
     if (!categoryIds.success || !categoryIds.results) {
@@ -52,7 +55,7 @@ app.get(
 
     const maxCategoriesValue = categoryIds.results.reduce(
       (prev, current) => prev | current.id,
-      0
+      0,
     )
     const categories = queries.data.categories
       ? Number.parseInt(queries.data.categories)
@@ -84,7 +87,7 @@ INNER JOIN Feed ON Item.feedId = Feed.id
 WHERE (? & Feed.categoryId) = Feed.categoryId
 ORDER BY Item.publishedAt DESC
 LIMIT ? OFFSET ?
-    `
+    `,
     )
       .bind(categories, size, skip)
       .all<Result>()
@@ -95,10 +98,10 @@ LIMIT ? OFFSET ?
           ({
             ...item,
             publishedAt: new Date(item.publishedAt),
-          } ?? [])
-      )
+          }) ?? [],
+      ),
     )
-  }
+  },
 )
 
 export default {
@@ -106,10 +109,10 @@ export default {
   async scheduled(
     _event: ScheduledEvent,
     { DB }: Bindings,
-    _context: Pick<ExecutionContext, 'waitUntil'>
+    _context: Pick<ExecutionContext, 'waitUntil'>,
   ) {
     const feeds = await DB.prepare(
-      'SELECT id, url FROM Feed WHERE updatedAt < ?'
+      'SELECT id, url FROM Feed WHERE updatedAt < ?',
     )
       .bind(new Date(Date.now() - 3_600_000).toISOString())
       .all<{ id: number; url: string }>()
@@ -122,19 +125,19 @@ export default {
       if (!entries) continue
 
       const insertItem = DB.prepare(
-        'INSERT OR IGNORE INTO Item (title, url, publishedAt, feedId) VALUES (?, ?, ?, ?)'
+        'INSERT OR IGNORE INTO Item (title, url, publishedAt, feedId) VALUES (?, ?, ?, ?)',
       )
 
       await DB.batch([
         ...entries.map(({ title, link, published }) =>
-          insertItem.bind(title, link, published, id)
+          insertItem.bind(title, link, published, id),
         ),
         DB.prepare('DELETE FROM Item WHERE publishedAt < ?').bind(
-          new Date(Date.now() - 2_678_400_000).toISOString()
+          new Date(Date.now() - 2_678_400_000).toISOString(),
         ),
         DB.prepare('UPDATE Feed SET updatedAt = ? WHERE id = ?').bind(
           new Date().toISOString(),
-          id
+          id,
         ),
       ])
     }
