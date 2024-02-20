@@ -16,6 +16,6 @@
     "@biomejs/biome": "^1.5.3",
     "@cloudflare/workers-types": "^4.20240208.0",
     "typescript": "^5.3.3",
-    "wrangler": "3.28.2"
+    "wrangler": "3.28.4"
   }
 }
