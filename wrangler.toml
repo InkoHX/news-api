@@ -5,8 +5,8 @@ workers_dev = false
 
 [[ d1_databases ]]
 binding = "DB"
-database_name = "news"
-database_id = "48be842e-9875-4bd7-af9b-acd1da72c444"
+database_name = "news-prod"
+database_id = "6a7c08b8-5750-4c2d-9c5f-ef4938ffca0e"
 migrations_dir = "./db/migrations"
 preview_database_id = "5be48141-1b60-461b-89bc-c3c5a8bac112"
 # D1
