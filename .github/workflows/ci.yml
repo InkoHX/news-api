@@ -27,7 +27,7 @@ jobs:
           node-version: 18
       - run: npm ci
       - name: Deploy to Cloudflare
-        uses: cloudflare/wrangler-action@v3.4.1
+        uses: cloudflare/wrangler-action@v3.11.0
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
