@@ -10,7 +10,7 @@
   "dependencies": {
     "@extractus/feed-extractor": "^7.0.9",
     "hono": "^4.0.1",
-    "zod": "^3.22.4"
+    "zod": "^4.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.5.3",
